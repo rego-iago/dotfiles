@@ -169,6 +169,7 @@
          { command = ["swww-daemon" ]; }
          { command = ["dunst" ]; }
          { command = ["xwayland-satellite" ]; }
+         { argv = ["wlsunset" "-l" "43.2" "-L" "8.2"]; }
       ];
 
       screenshot-path = "~/mídia/capturas/%Y-%m-%d-%H-%M-%S.png";

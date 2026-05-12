@@ -47,7 +47,7 @@
   };
 
   # steam config
-  hardware.steam-hardware.enable = true;
+  #hardware.steam-hardware.enable = true;
 
   # systemd-boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -93,6 +93,9 @@
     jack.enable = true;
   };
 
+  # printing configuration
+  services.printing.enable = true;
+
   # bluetooth configuration
   hardware.bluetooth = {
     enable = true;
@@ -121,14 +124,33 @@
   };
 
   # programs & services
-  programs.firefox.enable = true;
-  programs.tmux.enable = true;
-  programs.steam = {
+  programs.firefox = {
     enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+    policies.WebsiteFilter = {
+      Block = [
+            "*://*.nitter.net/*"
+            "*://nitter.net/*"
+            "*://*.youtube.com/*"
+            "*://youtube.com/*"
+            "*://*.reddit.com/*"
+            "*://reddit.com/*"
+            "*://*.instagram.com/*"
+            "*://instagram.com/*"
+            "*://*.skyscrapercity.com/*"
+            "*://skyscrapercity.com/*"
+            "*://*.bsky.app/*"
+            "*://bsky.app/*"
+            "*://*.twitch.tv/*"
+            "*://twitch.tv/*"
+      ];
+    };
   };
+  programs.tmux.enable = true;
+  #programs.steam = { enable = true;
+   # remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+   # dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+   # localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  #};
   programs.adb.enable = true;
   services.tor.enable = true;
 
@@ -203,6 +225,8 @@
 
     glib
 
+    wlsunset
+
     # multimedia
     gparted       # partition
     libarchive
@@ -232,11 +256,20 @@
     signal-desktop
     teams-for-linux
 
-    prismlauncher # minecraft
+    thunderbird
+
+    #prismlauncher # minecraft
+    protonmail-desktop
 
     inotify-tools
     ffmpeg-full
+    libreoffice
+    ollama
+    python3
+    erlang
+    rebar3
 
+    wluma
   ];
 
   # first verison of NixOs installed, (!!) not to be changed (!!)
