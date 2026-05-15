@@ -92,7 +92,7 @@
     ];
   };
 
-  fonts.packages = with pkgs; []++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.unstable.maple-mono);
+  fonts.packages = with pkgs; []++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.unstable.maple-mono)++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.atkinson-hyperlegible-next);
 
   services.tlp.enable = true;
 
@@ -101,7 +101,27 @@
     enable = true;
   };
 
-  programs.firefox.enable = true;
+programs.firefox = {
+    enable = true;
+    policies.WebsiteFilter = {
+      Block = [
+            "*://*.nitter.net/*"
+            "*://nitter.net/*"
+            "*://*.youtube.com/*"
+            "*://youtube.com/*"
+            "*://*.reddit.com/*"
+            "*://reddit.com/*"
+            "*://*.instagram.com/*"
+            "*://instagram.com/*"
+            "*://*.skyscrapercity.com/*"
+            "*://skyscrapercity.com/*"
+            "*://*.bsky.app/*"
+            "*://bsky.app/*"
+            "*://*.twitch.tv/*"
+            "*://twitch.tv/*"
+      ];
+    };
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -132,6 +152,22 @@
     clang-tools
     swww
     telegram-desktop
+    texlive.combined.scheme-full # system-wide for correct behaviour when compiling
+    signal-desktop
+
+    inkscape
+
+    zathura
+    yazi
+
+    unstable.gleam
+
+    wlsunset
+    blueman # bluetooth
+    bluez-tools
+
+    libarchive
+    hyfetch
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
