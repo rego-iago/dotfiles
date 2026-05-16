@@ -113,7 +113,13 @@
   };
 
   # external fonts
-  fonts.packages = with pkgs; []++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.unstable.maple-mono)++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.atkinson-hyperlegible-next);
+  fonts.packages = with pkgs; [
+    nerd-fonts.symbols-only
+    maple-mono.truetype
+    maple-mono.NF-CN
+    atkinson-hyperlegible-next
+  ];
+
 
   # touchpad
   services.libinput.enable = true;
@@ -179,10 +185,11 @@
 
     xwayland-satellite # x11 compatibility
 
+    # notifications
+    mako
+    dunst
+    libnotify
 
-    mako          # notifications
-    dunst         # notification daemon
-    libnotify 
     swww          # background
     wofi          # launcher program
     starship      # terminal personalization
@@ -208,8 +215,11 @@
     libimobiledevice
     ifuse # optional, to mount using 'ifuse'
 
-    blueman # bluetooth
+    # bluetooth
+    blueman 
     bluez-tools
+
+    pwvucontrol # audio control
 
     # windows compatibility
     wineWowPackages.stable      # both 32 & 64-bit support
@@ -234,7 +244,7 @@
     gallery-dl
     yazi          # files
 
-    yt-dlp # media download
+    yt-dlp          # media download
     calibre         # books
     qgis            # FOSS maps
     libwacom        # touch tablet
@@ -269,9 +279,12 @@
     erlang
     rebar3
 
-    wluma
+    # system fetch
+    hyfetch
+    fastfetch
   ];
 
+  nix.settings.auto-optimise-store = true;
   # first verison of NixOs installed, (!!) not to be changed (!!)
   system.stateVersion = "24.11";
 

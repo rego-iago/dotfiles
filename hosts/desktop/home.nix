@@ -379,10 +379,14 @@
       enable = true;
       settings = {
         background_opacity = "0.9";
-        font_family = "Maple Mono";
+        font_family = "Maple Mono NF";
+        bold_font = "auto";
+        italic_font = "auto";
+        bold_italic_font = "auto";
         font_size = "12.5";
-        disable_ligatures = "never";
         window_padding_width = "4";
+        disable_ligatures = "never";
+        font_features = "MapleMono-NF-Regular +zero +calt +cv07 +cv08 +cv09 +cv10 +cv11 +cv65 +cv66 +ss03 +ss10 +ss11 +cv31 +cv32 +cv33 +cv38 +cv43";
       };
     };
 
@@ -790,4 +794,163 @@
 
     };
 
+  programs.fastfetch = {
+    enable=true;
+    settings = {
+      # what a pain in the ass
+      display = {
+        # ❯ char separator for display
+        separator = " ";
+
+        # title & keys coloration
+        color = {
+          keys = "00";
+          title = "00";
+        };
+
+        # display bar style
+        bar = {
+          char = {
+            elapsed = "■";
+            total = " ";
+          };
+
+          width = 12;
+        };
+      };
+
+      # all that shit
+      modules = [
+
+        {
+          type = "custom";
+          key = "╭───────────╮";
+        }
+
+        {
+          type = "title";
+          key = "│ {#cyan} ";
+          format = "user   │ {#cyan}{1}  ";
+        }
+
+        {
+          type = "os";
+          key = "│ {#blue} ";
+          format = "distro │ {#blue}{name} {version}";
+        }
+        {
+          type = "packages";
+          key = "│ {#magenta}󰏗 ";
+          format = "pkgs   │ {#magenta}{9} (system) {10} (user)";
+        }
+        {
+          type = "wm";
+          key = "│ {#yellow} ";
+          format = "comp   │ {#yellow}{1} ({3}) {4}";
+        }
+        {
+          type = "terminal";
+          key = "│ {#cyan} ";
+          format = "term   │ {#cyan}{1} {6} (bash)";
+        }
+        {
+          type = "cpu";
+          key = "│ {#red} ";
+          format = "chip   │ {#red}{1} @ {7}";
+        }
+        {
+          type = "gpu";
+          key = "│ {#green} ";
+          format = "graph  │ {#green}{1} {2}";
+          hideType = "Integrated";
+        }
+        {
+          type = "memory";
+          key = "│ {#yellow} ";
+          format = "memory │ {#yellow}{1} | {2}";
+        }
+        {
+          type = "disk";
+          key = "│ {#blue} ";
+          format = "disk   │ {#blue}{1} | {2} {10}";
+        }
+        {
+          type = "custom";
+          key = "├───────────┤";
+        }
+        {
+          type = "colors";
+          key = "│ {#green} {#white} colors │";
+          symbol = "circle";
+          block = {
+            width = 4;
+            height = 1;
+          };
+        }
+        {
+          type = "custom";
+          key = "╰───────────╯";
+        }
+      ];
+    };
+  };
+
+  programs.hyfetch = {
+    enable = true;
+    settings = {
+      preset = "gay-men";
+      mode = "rgb";
+      light_dark = "dark";
+      lightness = 0.80;
+      color_align.mode = "horizontal";
+      backend = "fastfetch";
+      pride_month_disable = false;
+      custom_ascii_path = "/home/iago/dotfiles/media/ascii.txt";
+    };
+  };
+
+
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        follow = "keyboard";
+        width = 300;
+        height = 300;
+        offset = "(30, 30)";
+        origin = "top-right";
+        frame_width = 2;
+        show_age_threshold = -1;
+        font = "Maple Mono NF 12";
+        timeout = 600;
+        format = ''<b>%s</b>\n%b'';
+        frame_color = "#ffffff";
+        separator_color = "frame";
+        transparency = 10;
+        corner_radius = 12;
+        gap_size = 10;
+        notification_limit = 7;
+        word_wrap = true;
+        indicate_hidden = true;
+        background = "#ffffff";
+        foreground = "#000000";
+        highlight = "#000000";
+
+        progress_bar = true;
+        progress_bar_height = 10;
+        progress_bar_frame_width = 1;
+        progress_bar_min_width = 150;
+        progress_bar_max_width = 300;
+      };
+      volume = {
+        summary = "Volume";
+        set_stack_tag = "volume";
+      };
+      backlight = {
+        summary = "Backlight";
+        highlight = "#ffffff";
+        set_stack_tag = "backlight";
+      };
+    };
+  };
 }
