@@ -92,7 +92,14 @@
     ];
   };
 
-  fonts.packages = with pkgs; []++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.unstable.maple-mono)++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.atkinson-hyperlegible-next);
+  # external fonts
+  fonts.packages = with pkgs; [
+    nerd-fonts.symbols-only
+    maple-mono.truetype
+    maple-mono.CN
+    maple-mono.NF
+    atkinson-hyperlegible-next
+  ];
 
   services.tlp.enable = true;
 
@@ -168,6 +175,7 @@ programs.firefox = {
 
     libarchive
     hyfetch
+    fastfetch
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

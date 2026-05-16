@@ -169,6 +169,7 @@
          { command = ["swww-daemon" ]; }
          { command = ["dunst" ]; }
          { command = ["xwayland-satellite" ]; }
+         { argv = ["wlsunset" "-l" "43.2" "-L" "8.2"]; }
       ];
 
       screenshot-path = "~/mídia/capturas/%Y-%m-%d-%H-%M-%S.png";
@@ -436,12 +437,20 @@
 
     kitty = {
       enable = true;
+      themeFile = "Catppuccin-Mocha";
       settings = {
         background_opacity = "0.9";
-        font_family = "Maple Mono";
+        font_family = "Maple Mono NF";
+        bold_font = "auto";
+        italic_font = "auto";
+        bold_italic_font = "auto";
         font_size = "10";
-        disable_ligatures = "never";
         window_padding_width = "4";
+        disable_ligatures = "never";
+        font_features = "MapleMono-NF-Regular +zero +calt +cv07 +cv08 +cv09 +cv10 +cv11 +cv65 +cv66 +ss03 +ss10 +ss11 +cv31 +cv32 +cv33 +cv38 +cv43";
+        background = "#000000";
+        foreground = "#FFFFFF";
+        white = "#FFFFFF";
       };
     };
 
@@ -848,5 +857,125 @@
       };
 
     };
+
+  programs.fastfetch = {
+    enable=true;
+    settings = {
+      # what a pain in the ass
+      display = {
+        # ❯ char separator for display
+        separator = " ";
+
+        # title & keys coloration
+        color = {
+          keys = "00";
+          title = "00";
+        };
+
+        # display bar style
+        bar = {
+          char = {
+            elapsed = "■";
+            total = " ";
+          };
+
+          width = 12;
+        };
+      };
+
+      # all that shit
+      modules = [
+
+        {
+          type = "custom";
+          key = "╭───────────╮";
+        }
+
+        {
+          type = "title";
+          key = "│ {#cyan} ";
+          format = "user   │ {#cyan}{1}  ";
+        }
+
+        {
+          type = "os";
+          key = "│ {#blue} ";
+          format = "distro │ {#blue}{name} {version}";
+        }
+        {
+          type = "packages";
+          key = "│ {#magenta} ";
+          format = "pkgs   │ {#magenta}{9} (system) {10} (user)";
+        }
+        {
+          type = "wm";
+          key = "│ {#yellow} ";
+          format = "comp   │ {#yellow}{1} ({3}) {4}";
+        }
+        {
+          type = "terminal";
+          key = "│ {#cyan} ";
+          format = "term   │ {#cyan}{1} {6} (bash)";
+        }
+        {
+          type = "host";
+          key = "│ {#magenta}󰌢 ";
+          format = "laptop │ {#magenta}{1}";
+        }
+        {
+          type = "cpu";
+          key = "│ {#red} ";
+          format = "chip   │ {#red}{1} @ {7}";
+        }
+        {
+          type = "gpu";
+          key = "│ {#green} ";
+          format = "graph  │ {#green}{1} {2}";
+          hideType = "Integrated";
+        }
+        {
+          type = "memory";
+          key = "│ {#yellow} ";
+          format = "memory │ {#yellow}{1} | {2}";
+        }
+        {
+          type = "disk";
+          key = "│ {#blue} ";
+          format = "disk   │ {#blue}{1} | {2} {10}";
+        }
+        {
+          type = "custom";
+          key = "├───────────┤";
+        }
+        {
+          type = "colors";
+          key = "│ {#white} {#00} colors │";
+          symbol = "circle";
+          block = {
+            width = 4;
+            height = 1;
+          };
+        }
+        {
+          type = "custom";
+          key = "╰───────────╯";
+        }
+      ];
+    };
+  };
+
+  programs.hyfetch = {
+    enable = true;
+    settings = {
+      preset = "gay-men";
+      mode = "rgb";
+      light_dark = "dark";
+      lightness = 0.80;
+      color_align.mode = "horizontal";
+      backend = "fastfetch";
+      pride_month_disable = false;
+      custom_ascii_path = "/home/iago/dotfiles/media/ascii.txt";
+    };
+  };
 
 }
