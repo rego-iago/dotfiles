@@ -3,14 +3,23 @@
 #   https://search.nixos.org/options
 #   NixOS manual (`nixos-help`)
 
-{ inputs, config, lib, pkgs, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
-    ./hardware-desktop.nix  # hardware scan
+    ./hardware-desktop.nix # hardware scan
     ./module.nix
   ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nixpkgs = {
     config.allowUnfree = true;
   };
@@ -81,7 +90,7 @@
   };
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals =[ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
   # sound configuration
   security.rtkit.enable = true;
@@ -104,9 +113,13 @@
   services.blueman.enable = true;
 
   # user account (password set with ‘passwd’)
-  users.users.iago= {
+  users.users.iago = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" "adbusers" ];
+    extraGroups = [
+      "wheel"
+      "audio"
+      "adbusers"
+    ];
     packages = with pkgs; [
       tree
     ];
@@ -119,7 +132,6 @@
     maple-mono.NF-CN
     atkinson-hyperlegible-next
   ];
-
 
   # touchpad
   services.libinput.enable = true;
@@ -134,28 +146,28 @@
     enable = true;
     policies.WebsiteFilter = {
       Block = [
-            "*://*.nitter.net/*"
-            "*://nitter.net/*"
-            "*://*.youtube.com/*"
-            "*://youtube.com/*"
-            "*://*.reddit.com/*"
-            "*://reddit.com/*"
-            "*://*.instagram.com/*"
-            "*://instagram.com/*"
-            "*://*.skyscrapercity.com/*"
-            "*://skyscrapercity.com/*"
-            "*://*.bsky.app/*"
-            "*://bsky.app/*"
-            "*://*.twitch.tv/*"
-            "*://twitch.tv/*"
+        "*://*.nitter.net/*"
+        "*://nitter.net/*"
+        "*://*.youtube.com/*"
+        "*://youtube.com/*"
+        "*://*.reddit.com/*"
+        "*://reddit.com/*"
+        "*://*.instagram.com/*"
+        "*://instagram.com/*"
+        "*://*.skyscrapercity.com/*"
+        "*://skyscrapercity.com/*"
+        "*://*.bsky.app/*"
+        "*://bsky.app/*"
+        "*://*.twitch.tv/*"
+        "*://twitch.tv/*"
       ];
     };
   };
   programs.tmux.enable = true;
   #programs.steam = { enable = true;
-   # remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-   # dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-   # localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  # remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+  # dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  # localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   #};
   programs.adb.enable = true;
   services.tor.enable = true;
@@ -180,6 +192,9 @@
     unstable.gleam
     ocamlPackages.lsp
     haskellPackages.haskell-language-server
+    python3
+    erlang
+    rebar3
 
     texlive.combined.scheme-full # system-wide for correct behaviour when compiling
 
@@ -190,10 +205,10 @@
     dunst
     libnotify
 
-    swww          # background
-    wofi          # launcher program
-    starship      # terminal personalization
-    wl-clipboard  # clipboard
+    swww # background
+    wofi # launcher program
+    starship # terminal personalization
+    wl-clipboard # clipboard
     ripgrep
 
     # image
@@ -216,46 +231,45 @@
     ifuse # optional, to mount using 'ifuse'
 
     # bluetooth
-    blueman 
+    blueman
     bluez-tools
 
     pwvucontrol # audio control
 
     # windows compatibility
-    wineWowPackages.stable      # both 32 & 64-bit support
-    wine                        # 32-bit support only
+    wineWowPackages.stable # both 32 & 64-bit support
+    wine # 32-bit support only
     (wine.override { wineBuild = "wine64"; }) # 64-bit support only
     wine64
-    wineWowPackages.staging     # experimental features
-    winetricks                  # (all versions)
+    wineWowPackages.staging # experimental features
+    winetricks # (all versions)
     wineWowPackages.waylandFull # native wayland support (unstable)
     wineWowPackages.full
 
     tor-browser
 
     glib
-
-    wlsunset
+    wlsunset # automatic blue light filter
 
     # multimedia
-    gparted       # partition
-    libarchive
-    kiwix         # archives
-    gallery-dl
-    yazi          # files
+    gparted # partition
+    libarchive # formatting
+    kiwix # archives
+    yazi # file explorer
+    gallery-dl # image download
+    yt-dlp # video download
+    calibre # book library
+    qgis # FOSS maps
+    libwacom # touch tablet
+    mpv # video player
+    tageditor # music file editor
+    amberol # music player
+    zathura # pdf viewer
+    ffmpeg-full # handle multimedia stream
 
-    yt-dlp          # media download
-    calibre         # books
-    qgis            # FOSS maps
-    libwacom        # touch tablet
-    mpv             # video
-    tageditor       # music
-    amberol
-    fontforge       # font editor
-    zathura       # pdf viewer
-
+    # screen recorder
     obs-studio
-    (pkgs.wrapOBS{
+    (pkgs.wrapOBS {
       plugins = with pkgs.obs-studio-plugins; [
         wlrobs
       ];
@@ -266,18 +280,12 @@
     signal-desktop
     teams-for-linux
 
-    thunderbird
+    libreoffice # office
 
     #prismlauncher # minecraft
-    protonmail-desktop
 
     inotify-tools
-    ffmpeg-full
-    libreoffice
     ollama
-    python3
-    erlang
-    rebar3
 
     # system fetch
     hyfetch
@@ -289,4 +297,3 @@
   system.stateVersion = "24.11";
 
 }
-
