@@ -1,6 +1,5 @@
 { pkgs, ... }:
 
-
 {
   # necessary info
   home.username = "iago";
@@ -98,15 +97,15 @@
         gaps = 20;
         # center-focused-column = "on-overflow";
         preset-column-widths = [
-          {proportion = 1.0 / 3.0;}
-          {proportion = 1.0 / 2.0;}
-          {proportion = 2.0 / 3.0;}
-          {proportion = 1.0;}
+          { proportion = 1.0 / 3.0; }
+          { proportion = 1.0 / 2.0; }
+          { proportion = 2.0 / 3.0; }
+          { proportion = 1.0; }
         ];
 
         # preset-window-heights = [{proportion = ...;}]
 
-        default-column-width = {};
+        default-column-width = { };
 
         # focused window
         focus-ring = {
@@ -166,10 +165,18 @@
       };
 
       spawn-at-startup = [
-         { command = ["swww-daemon" ]; }
-         { command = ["dunst" ]; }
-         { command = ["xwayland-satellite" ]; }
-         { argv = ["wlsunset" "-l" "43.2" "-L" "8.2"]; }
+        { command = [ "swww-daemon" ]; }
+        { command = [ "dunst" ]; }
+        { command = [ "xwayland-satellite" ]; }
+        {
+          argv = [
+            "wlsunset"
+            "-l"
+            "43.2"
+            "-L"
+            "8.2"
+          ];
+        }
       ];
 
       screenshot-path = "~/mídia/capturas/%Y-%m-%d-%H-%M-%S.png";
@@ -191,12 +198,16 @@
         workspace-shadow.enable = false;
       };
 
-      layer-rules = [{
-        matches = [{
-          namespace = "^swww-daemon$";
-        }];
-        place-within-backdrop = true;
-      }];
+      layer-rules = [
+        {
+          matches = [
+            {
+              namespace = "^swww-daemon$";
+            }
+          ];
+          place-within-backdrop = true;
+        }
+      ];
 
       environment = {
         CLUTTER_BACKEND = "wayland";
@@ -223,10 +234,13 @@
         "Mod+Slash".action.show-hotkey-overlay = { };
 
         "Mod+T".action.spawn = "kitty";
-        "Mod+D".action.spawn = ["wofi" "--show" "run"];
+        "Mod+D".action.spawn = [
+          "rofi"
+          "-show"
+          "run"
+        ];
 
-        "Mod+Q".action.close-window = [];
-
+        "Mod+Q".action.close-window = [ ];
 
         # audio
         "XF86AudioRaiseVolume" = {
@@ -266,7 +280,6 @@
           ];
         };
 
-
         # window controls
         "Mod+H".action.focus-column-left = { };
         "Mod+J".action.focus-window-down = { };
@@ -293,7 +306,6 @@
         "Mod+Shift+Ctrl+J".action.move-column-to-monitor-down = { };
         "Mod+Shift+Ctrl+K".action.move-column-to-monitor-up = { };
         "Mod+Shift+Ctrl+L".action.move-column-to-monitor-right = { };
-
 
         # workspace controls
         "Mod+U".action.focus-workspace-down = { };
@@ -343,12 +355,16 @@
         "Mod+Shift+V".action.switch-focus-between-floating-and-tiling = { };
         "Mod+W".action.toggle-column-tabbed-display = { };
 
-        "Print".action.screenshot-screen = {write-to-disk = true;};
+        "Print".action.screenshot-screen = {
+          write-to-disk = true;
+        };
         "Ctrl+Print".action.screenshot-screen = { };
         "Alt+Print".action.screenshot-window = { };
 
         "Mod+Shift+E".action.quit = { };
-        "Mod+Ctrl+Shift+E".action.quit = { skip-confirmation=true; };
+        "Mod+Ctrl+Shift+E".action.quit = {
+          skip-confirmation = true;
+        };
         "Mod+Shift+P".action.power-off-monitors = { };
       };
 
@@ -377,6 +393,7 @@
 
     kitty = {
       enable = true;
+      themeFile = "Catppuccin-Mocha";
       settings = {
         background_opacity = "0.9";
         font_family = "Maple Mono NF";
@@ -387,10 +404,12 @@
         window_padding_width = "4";
         disable_ligatures = "never";
         font_features = "MapleMono-NF-Regular +zero +calt +cv07 +cv08 +cv09 +cv10 +cv11 +cv65 +cv66 +ss03 +ss10 +ss11 +cv31 +cv32 +cv33 +cv38 +cv43";
+        background = "#000000";
+        foreground = "#FFFFFF";
       };
     };
 
-    starship= {
+    starship = {
       enable = true;
       enableBashIntegration = true;
 
@@ -464,7 +483,6 @@
         set -g pane-active-border-style "bg=default fg=blue"
       '';
     };
-
 
     zathura = {
       enable = true;
@@ -541,19 +559,23 @@
 
       '';
 
-      plugins = let
-        nvim-treesitter-with-plugins = pkgs.vimPlugins.nvim-treesitter.withPlugins (treesitter-plugins: with treesitter-plugins; [
-          c
-          nix
-          python
-          latex
-          java
-          gleam
-          haskell
-          ocaml
-        ]);
-      in
-        with pkgs.vimPlugins; [
+      plugins =
+        let
+          nvim-treesitter-with-plugins = pkgs.vimPlugins.nvim-treesitter.withPlugins (
+            treesitter-plugins: with treesitter-plugins; [
+              c
+              nix
+              python
+              latex
+              java
+              gleam
+              haskell
+              ocaml
+            ]
+          );
+        in
+        with pkgs.vimPlugins;
+        [
           {
             plugin = nvim-web-devicons;
             type = "lua";
@@ -612,72 +634,73 @@
           {
             plugin = gitsigns-nvim;
             type = "lua";
-            config = ''require('gitsigns').setup({
-              on_attach = function(bufnr)
-                local gitsigns = require('gitsigns')
+            config = ''
+              require('gitsigns').setup({
+                            on_attach = function(bufnr)
+                              local gitsigns = require('gitsigns')
 
-                local function map(mode, l, r, opts)
-                  opts = opts or {}
-                  opts.buffer = bufnr
-                  vim.keymap.set(mode, l, r, opts)
-                end
+                              local function map(mode, l, r, opts)
+                                opts = opts or {}
+                                opts.buffer = bufnr
+                                vim.keymap.set(mode, l, r, opts)
+                              end
 
-                -- Navigation
-                map('n', ']c', function()
-                  if vim.wo.diff then
-                    vim.cmd.normal({']c', bang = true})
-                  else
-                    gitsigns.nav_hunk('next')
-                  end
-                end)
+                              -- Navigation
+                              map('n', ']c', function()
+                                if vim.wo.diff then
+                                  vim.cmd.normal({']c', bang = true})
+                                else
+                                  gitsigns.nav_hunk('next')
+                                end
+                              end)
 
-                map('n', '[c', function()
-                  if vim.wo.diff then
-                    vim.cmd.normal({'[c', bang = true})
-                  else
-                    gitsigns.nav_hunk('prev')
-                  end
-                end)
+                              map('n', '[c', function()
+                                if vim.wo.diff then
+                                  vim.cmd.normal({'[c', bang = true})
+                                else
+                                  gitsigns.nav_hunk('prev')
+                                end
+                              end)
 
-                -- Actions
-                map('n', '<leader>hs', gitsigns.stage_hunk)
-                map('n', '<leader>hr', gitsigns.reset_hunk)
+                              -- Actions
+                              map('n', '<leader>hs', gitsigns.stage_hunk)
+                              map('n', '<leader>hr', gitsigns.reset_hunk)
 
-                map('v', '<leader>hs', function()
-                  gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
-                end)
+                              map('v', '<leader>hs', function()
+                                gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+                              end)
 
-                map('v', '<leader>hr', function()
-                  gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
-                end)
+                              map('v', '<leader>hr', function()
+                                gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+                              end)
 
-                map('n', '<leader>hS', gitsigns.stage_buffer)
-                map('n', '<leader>hR', gitsigns.reset_buffer)
-                map('n', '<leader>hp', gitsigns.preview_hunk)
-                map('n', '<leader>hi', gitsigns.preview_hunk_inline)
+                              map('n', '<leader>hS', gitsigns.stage_buffer)
+                              map('n', '<leader>hR', gitsigns.reset_buffer)
+                              map('n', '<leader>hp', gitsigns.preview_hunk)
+                              map('n', '<leader>hi', gitsigns.preview_hunk_inline)
 
-                map('n', '<leader>hb', function()
-                  gitsigns.blame_line({ full = true })
-                end)
+                              map('n', '<leader>hb', function()
+                                gitsigns.blame_line({ full = true })
+                              end)
 
-                map('n', '<leader>hd', gitsigns.diffthis)
+                              map('n', '<leader>hd', gitsigns.diffthis)
 
-                map('n', '<leader>hD', function()
-                  gitsigns.diffthis('~')
-                end)
+                              map('n', '<leader>hD', function()
+                                gitsigns.diffthis('~')
+                              end)
 
-                map('n', '<leader>hQ', function() gitsigns.setqflist('all') end)
-                map('n', '<leader>hq', gitsigns.setqflist)
+                              map('n', '<leader>hQ', function() gitsigns.setqflist('all') end)
+                              map('n', '<leader>hq', gitsigns.setqflist)
 
-                -- Toggles
-                map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-                map('n', '<leader>td', gitsigns.toggle_deleted)
-                map('n', '<leader>tw', gitsigns.toggle_word_diff)
+                              -- Toggles
+                              map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+                              map('n', '<leader>td', gitsigns.toggle_deleted)
+                              map('n', '<leader>tw', gitsigns.toggle_word_diff)
 
-                -- Text object
-                map({'o', 'x'}, 'ih', gitsigns.select_hunk)
-              end
-            })'';
+                              -- Text object
+                              map({'o', 'x'}, 'ih', gitsigns.select_hunk)
+                            end
+                          })'';
           }
           {
             plugin = catppuccin-nvim;
@@ -756,46 +779,48 @@
           {
             plugin = nvim-treesitter-with-plugins;
             type = "lua";
-            config = ''require('nvim-treesitter.configs').setup({
+            config = ''
+              require('nvim-treesitter.configs').setup({
 
-              highlight = { enable = true, },
+                            highlight = { enable = true, },
 
-              incremental_selection = {
-                enable = true,
-                keymaps = {
-                  init_selection = "gnn",
-                  node_incremental = "grn",
-                  scope_incremental = "grc",
-                  node_decremental = "grm",
-                },
-              },
-            })
-          '';
+                            incremental_selection = {
+                              enable = true,
+                              keymaps = {
+                                init_selection = "gnn",
+                                node_incremental = "grn",
+                                scope_incremental = "grc",
+                                node_decremental = "grm",
+                              },
+                            },
+                          })
+            '';
 
           }
           {
             plugin = telescope-nvim;
             type = "lua";
-            config = ''require('telescope').setup({
-              vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' }),
-              vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' }),
-              vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' }),
-              vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' }),
-                  })
+            config = ''
+              require('telescope').setup({
+                            vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' }),
+                            vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' }),
+                            vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' }),
+                            vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' }),
+                                })
             '';
           }
           {
             plugin = vimtex;
             type = "lua";
-            config = '' vim.g.vimtex_view_method = "zathura" '';
+            config = ''vim.g.vimtex_view_method = "zathura" '';
           }
         ];
-      };
-
     };
 
+  };
+
   programs.fastfetch = {
-    enable=true;
+    enable = true;
     settings = {
       # what a pain in the ass
       display = {
@@ -872,7 +897,7 @@
         {
           type = "disk";
           key = "│ {#blue} ";
-          format = "disk   │ {#blue}{1} | {2} {10}";
+          format = "disk   │ {#blue}{1} | {2} {21}";
         }
         {
           type = "custom";
@@ -880,7 +905,7 @@
         }
         {
           type = "colors";
-          key = "│ {#green} {#white} colors │";
+          key = "│ {#green} {#00} colors │";
           symbol = "circle";
           block = {
             width = 4;
@@ -909,6 +934,25 @@
     };
   };
 
+  programs.rofi = {
+    enable = true;
+    extraConfig = {
+      modi = "drun,filebrowser,window,run";
+      show-icons = true;
+      icon-theme = "kora";
+      font = "Maple Mono";
+      drun-display-format = "{name}";
+      display-drun = "";
+      display-run = "";
+      display-filebrowser = "";
+      display-window = "🗔";
+      window-format = "{w}\t-\t{c}\t-\t{t}";
+      hover-select = false;
+      me-select-entry = "";
+      me-accept-entry = "MousePrimary";
+    };
+    theme = "catppuccin-mocha";
+  };
 
   services.dunst = {
     enable = true;
@@ -935,7 +979,6 @@
         background = "#ffffff";
         foreground = "#000000";
         highlight = "#000000";
-
         progress_bar = true;
         progress_bar_height = 10;
         progress_bar_frame_width = 1;

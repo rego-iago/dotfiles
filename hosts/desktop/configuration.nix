@@ -34,6 +34,8 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
 
+  services.gnome.gnome-keyring.enable = true;
+
   # mount IOS
   services.usbmuxd = {
     enable = true;
@@ -129,7 +131,8 @@
   fonts.packages = with pkgs; [
     nerd-fonts.symbols-only
     maple-mono.truetype
-    maple-mono.NF-CN
+    maple-mono.CN
+    maple-mono.NF
     atkinson-hyperlegible-next
   ];
 
@@ -206,7 +209,7 @@
     libnotify
 
     swww # background
-    wofi # launcher program
+    rofi # launcher program
     starship # terminal personalization
     wl-clipboard # clipboard
     ripgrep
@@ -290,6 +293,9 @@
     # system fetch
     hyfetch
     fastfetch
+    element-desktop
+    fractal
+    gnome-keyring
   ];
 
   nix.settings.auto-optimise-store = true;
